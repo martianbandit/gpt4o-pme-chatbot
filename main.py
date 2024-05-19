@@ -1,8 +1,8 @@
 import streamlit as st
-from app.authentication import login, check_login_status
-from app.chatbot import chatbot_interface
-from app.feedback import feedback_interface
-from app.metrics import metrics_interface
+from streamlit_app.authentication import login, check_login_status
+from services.chatbot import chatbot_interface
+from services.feedback import feedback_interface
+from services.metrics import metrics_interface
 
 # Initialisation de l'état de session
 if 'logged_in' not in st.session_state:
