@@ -5,6 +5,7 @@ from services.ingestion_service import ingest_data
 from services.file_service import extract_text_from_pdf, save_uploaded_file
 from services.data_storage import load_data
 from services.chatbot_service import generate_prompt, get_chatbot_response
+from services.feedback_service import submit_feedback, get_feedback
 
 st.set_page_config(page_title="Assistant IA", layout="wide")
 
@@ -15,9 +16,9 @@ company_data = load_data('company_data.json')
 tabs = ["Accueil", "Inscription", "Connexion"]
 if 'user' in st.session_state:
     if st.session_state['user'].get('is_admin'):
-        tabs.extend(["Ingestion de données", "Calculs et Prix", "Gestion des Fichiers (Admin)", "Chatbot"])
+        tabs.extend(["Ingestion de données", "Calculs et Prix", "Gestion des Fichiers (Admin)", "Chatbot", "Feedback"])
     else:
-        tabs.extend(["Ingestion de données", "Calculs et Prix", "Chatbot"])
+        tabs.extend(["Ingestion de données", "Calculs et Prix", "Chatbot", "Feedback"])
 
 selected_tab = st.sidebar.selectbox("Navigation", tabs)
 
@@ -76,7 +77,7 @@ if 'user' in st.session_state:
 
         surface = st.number_input("Surface en mètres carrés")
         profondeur = st.number_input("Profondeur en centimètres")
-        type_materiau = st.selectbox("Type de matériau", ["Terre", Sable", Paillis"])
+        type_materiau = st.selectbox("Type de matériau", ["Terre", Sable, Paillis"])
 
         if st.button("Calculer"):
             volume = surface * profondeur / 100  # Convertir en mètres cubes
@@ -121,10 +122,30 @@ if 'user' in st.session_state:
             response = get_chatbot_response(prompt)
             st.write(f"Réponse du Chatbot : {response}")
 
+    # Onglet Feedback
+    elif selected_tab == "Feedback":
+        st.header("Feedback")
+
+        rating = st.slider("Notez notre application", 1, 5)
+        comments = st.text_area("Commentaires")
+        if st.button("Soumettre le feedback"):
+            user_id = st.session_state['user']['id']
+            response = submit_feedback(user_id, rating, comments)
+            if 'error' in response:
+                st.error("Erreur lors de la soumission du feedback")
+            else:
+                st.success("Merci pour votre feedback !")
+
+        st.header("Feedback des utilisateurs")
+        feedback_data = get_feedback()
+        for feedback in feedback_data:
+            st.write(f"Note : {feedback['rating']}")
+            st.write(f"Commentaires : {feedback['comments']}")
+            st.write("---")
+
 # Si l'utilisateur n'est pas connecté, afficher uniquement les onglets Accueil, Inscription et Connexion
 else:
     st.title("Bienvenue sur l'Assistant IA du Spécialiste du Vrac")
     st.write("""
         Veuillez vous inscrire ou vous connecter pour accéder aux fonctionnalités avancées de l'application.
     """)
-
