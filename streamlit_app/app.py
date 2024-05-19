@@ -5,7 +5,7 @@ from services.ingestion_service import ingest_data
 from services.file_service import extract_text_from_pdf, save_uploaded_file
 from services.data_storage import load_data
 from services.chatbot_service import generate_prompt, get_chatbot_response
-from services.feedback_service import submit_feedback, get_feedback
+from services.feedback_interface import submit_feedback, get_feedback
 
 st.set_page_config(page_title="Assistant IA", layout="wide")
 
