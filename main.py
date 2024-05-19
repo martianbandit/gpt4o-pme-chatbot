@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_app.authentication import login, check_login_status
-from services.chatbot import chatbot_interface
+from services.chatbot import chatbot_service
 from services.feedback import feedback_interface
 from services.metrics import metrics_interface
 
