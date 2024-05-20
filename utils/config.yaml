@@ -1,0 +1,10 @@
+credentials:
+  usernames:
+    user1:
+      name: User One
+      password: hashed_password1
+      email: user1@example.com
+    user2:
+      name: User Two
+      password: hashed_password2
+      email: user2@example.com

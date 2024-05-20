@@ -1,5 +1,5 @@
 import streamlit as st
-from services.file_service import save_uploaded_file, extract_text_from_pdf
+from pages.file_service import save_uploaded_file, extract_text_from_pdf
 
 st.set_page_config(page_title="Admin - Assistant IA", layout="wide")
 
